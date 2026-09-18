@@ -1,0 +1,56 @@
+{
+  "components": {
+    "Button": {
+      "colorLink":"#2f54eb",
+      "colorPrimaryActive": "#2f54eb"
+    },
+    "Input": {
+      "colorBgContainer": "#f5faffc4"
+    },
+    "Table": {
+      "colorFillAlter": "#F5FAFF",  
+      "controlItemBgActiveHover": "#2f54eb",
+      "controlItemBgActive": "#2f54eb"      
+    },
+    "Menu": {
+      "colorPrimary": "#2f54eb",
+      "itemBg": "#2f54eb",
+      "itemHoverBg": "rgba(255, 255, 255, 0.6)",  
+      "itemActiveBg": "rgba(0, 0, 0, 0.06)",
+      "subMenuItemBg": "rgba(0, 0, 0, 0.02)",
+      "itemSelectedBg": "rgba(255, 255, 255, 0.72)",
+      "itemColor": "white",
+      "horizontalItemHoverColor": "#003D78",
+      "itemSelectedColor": "#003C77",
+      "groupTitleColor": "#2f54eb",
+      "horizontalItemSelectedBg": "#003D78",
+      "colorTextLightSolid": "black",
+      "radiusItem": 0,
+      "subMenuItemBorderRadius": 4,
+      "activeBarWidth": 10,
+      "activeBarHeight": 2,
+      "activeBarBorderWidth": 1,
+      "fontSize": 14,
+      "fontSizeLG": 16,
+      "borderRadius": 6,
+      "lineWidth": 1,
+      "lineWidthBold": 0
+    },
+    "Tabs": {
+      "colorBgContainer": "#2f54eb",
+      "colorPrimary": "white",
+      "inkBarColor": "red"
+    },
+    "Upload": {
+      "lineType": "dashed",
+      "controlHeightLG": 48,
+      "marginXS": 0
+    }
+  },
+  "token": {
+    "colorInfo": "white",
+    "colorPrimary": "#2f54eb",
+    "colorSecondary":"#2f54eb",
+    "colorBgLayout": "#f5faffc4"
+  }
+}

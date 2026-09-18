@@ -1,0 +1,961 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Hierarchy Tree</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f6fb;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    /* ===== TREE STRUCTURE ===== */
+    .tree {
+      display: flex;
+      justify-content: center;
+    }
+
+    .node {
+      text-align: center;
+      position: relative;
+      padding: 20px;
+    }
+
+    .children {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    /* vertical line down */
+    .children::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 0;
+      height: 20px;
+      border-left: 2px solid #ccc;
+    }
+
+    /* horizontal line */
+    .child::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      border-top: 2px solid #ccc;
+      z-index: -1;
+    }
+
+    .child:first-child::before {
+      left: 50%;
+      width: 50%;
+    }
+
+    .child:last-child::before {
+      width: 50%;
+    }
+
+    /* vertical line up to card */
+    .child::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 0;
+      height: 20px;
+      border-left: 2px solid #ccc;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .name {
+      font-weight: 600;
+      color: #222;
+    }
+
+    .email {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .role {
+      margin-top: 6px;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      color: white;
+    }
+
+    /* Role colors */
+    .level-1 { background: #6f42c1; }
+    .level-2 { background: #007bff; }
+    .level-3 { background: #28a745; }
+    .level-4 { background: #fd7e14; }
+  </style>
+</head>
+<body>
+
+<h1>User Hierarchy Tree</h1>
+
+<div class="tree" id="treeRoot"></div>
+
+<script>
+const data =  [
+        {
+            "id": "69341c2cba6f22bf13750119",
+            "fullName": "System Owner",
+            "email": "owner@crm.com",
+            "role": {
+                "name": "Super Admin",
+                "roleLevel": 1
+            },
+            "children": [
+                {
+                    "id": "6937e9793d8b7617a9c52285",
+                    "fullName": "Mr. Yunush",
+                    "email": "teamleader1@crm.com",
+                    "role": {
+                        "name": null,
+                        "roleLevel": null
+                    },
+                    "children": []
+                },
+                {
+                    "id": "6938060ecd9c99dbbe71c086",
+                    "fullName": "Admin",
+                    "email": "admin@crm.com",
+                    "role": {
+                        "name": "Admin",
+                        "roleLevel": 2
+                    },
+                    "children": [
+                        {
+                            "id": "6939117ccd9c99dbbe71c899",
+                            "fullName": "Manager B",
+                            "email": "manager@crm.com",
+                            "role": {
+                                "name": "Manager",
+                                "roleLevel": 3
+                            },
+                            "children": [
+                                {
+                                    "id": "693911accd9c99dbbe71c8bb",
+                                    "fullName": "Sales D Manager B",
+                                    "email": "sales@crm.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "69394fece122ea80da1c701f",
+                                    "fullName": "Sales C Manager B",
+                                    "email": "sales2@crm.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "693a9d0ae122ea80da1c8713",
+                            "fullName": "Manager A",
+                            "email": "manager2@crm.com",
+                            "role": {
+                                "name": "Manager",
+                                "roleLevel": 3
+                            },
+                            "children": [
+                                {
+                                    "id": "693a9f35e122ea80da1c87a5",
+                                    "fullName": "SalesB Manager A",
+                                    "email": "sales1m2@crm.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "693a9f56e122ea80da1c87be",
+                                    "fullName": "SalesA Manger A",
+                                    "email": "sales2m2@crm.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "693808accd9c99dbbe71c124",
+                    "fullName": "mayank Admin",
+                    "email": "mayankadmin@crm.com",
+                    "role": {
+                        "name": "Admin",
+                        "roleLevel": 2
+                    },
+                    "children": [
+                        {
+                            "id": "69414141e513ce79f92a7087",
+                            "fullName": "Mayank Manager",
+                            "email": "mm@crm.com",
+                            "role": {
+                                "name": "Manager",
+                                "roleLevel": 3
+                            },
+                            "children": [
+                                {
+                                    "id": "6941419fe513ce79f92a7151",
+                                    "fullName": "Mayank Sales",
+                                    "email": "ms1@crm.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": "6941416ee513ce79f92a70e8",
+                            "fullName": "Mayank Manager 2",
+                            "email": "mm1@crm.com",
+                            "role": {
+                                "name": "Manager",
+                                "roleLevel": 3
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "69425133e513ce79f92a8870",
+                    "fullName": "Yash Jha",
+                    "email": "yash@gmail.com",
+                    "role": {
+                        "name": "Admin",
+                        "roleLevel": 2
+                    },
+                    "children": [
+                        {
+                            "id": "6942b9249cab16656fdb7dc2",
+                            "fullName": "Yash TL",
+                            "email": "Yashtl@nexthikes.com",
+                            "role": {
+                                "name": "Manager",
+                                "roleLevel": 3
+                            },
+                            "children": [
+                                {
+                                    "id": "6942b9759cab16656fdb7dea",
+                                    "fullName": "Ruchi ",
+                                    "email": "Ruchi@nexthikes.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "6942b9ad9cab16656fdb7e03",
+                                    "fullName": "Suleman ",
+                                    "email": "Suleman@nexthikes.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "6942b9e39cab16656fdb7e1d",
+                                    "fullName": "Arya",
+                                    "email": "Arya@nexthikes.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "6942ba1b9cab16656fdb7e36",
+                                    "fullName": "Prashant ",
+                                    "email": "Prashant@nexthikes.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                },
+                                {
+                                    "id": "6942ba4b9cab16656fdb7e4f",
+                                    "fullName": "Akansha ",
+                                    "email": "akansha@nexthikes.com",
+                                    "role": {
+                                        "name": "Sales Executive",
+                                        "roleLevel": 4
+                                    },
+                                    "children": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]// 👈 paste your API data array
+
+function createTree(user) {
+  const node = document.createElement("div");
+  node.className = "node";
+
+  node.innerHTML = `
+    <div class="card">
+      <div class="name">${user.fullName}</div>
+      <div class="email">${user.email}</div>
+      <div class="role level-${user.role?.roleLevel}">
+        ${user.role?.name || "No Role"}
+      </div>
+    </div>
+  `;
+
+  if (user.children && user.children.length > 0) {
+    const childrenWrapper = document.createElement("div");
+    childrenWrapper.className = "children";
+
+    user.children.forEach(child => {
+      const childNode = document.createElement("div");
+      childNode.className = "child";
+      childNode.appendChild(createTree(child));
+      childrenWrapper.appendChild(childNode);
+    });
+
+    node.appendChild(childrenWrapper);
+  }
+
+  return node;
+}
+
+const root = document.getElementById("treeRoot");
+data.forEach(r => root.appendChild(createTree(r)));
+</script>
+
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Hierarchy Tree - Org Chart</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #2c3e50;
+      font-size: 2.5rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .tree-container {
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px;
+      min-height: 600px;
+    }
+
+    .tree {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Root level */
+    .level-0 {
+      margin-bottom: 80px;
+    }
+
+    /* Each row of nodes */
+    .tree-level {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-bottom: 80px;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    /* Node styling */
+    .node {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .node-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      min-width: 250px;
+      max-width: 280px;
+      transition: all 0.3s ease;
+      border: 3px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .node-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .node-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: #3498db;
+    }
+
+    /* Role-specific colors for left border */
+    .node-card.level-1::before { background: #6f42c1; }
+    .node-card.level-2::before { background: #007bff; }
+    .node-card.level-3::before { background: #28a745; }
+    .node-card.level-4::before { background: #fd7e14; }
+
+    .node-name {
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .node-email {
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 15px;
+      word-break: break-word;
+    }
+
+    .node-role {
+      display: inline-block;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Role background colors */
+    .level-1 { background: linear-gradient(135deg, #6f42c1, #8e44ad); }
+    .level-2 { background: linear-gradient(135deg, #007bff, #3498db); }
+    .level-3 { background: linear-gradient(135deg, #28a745, #2ecc71); }
+    .level-4 { background: linear-gradient(135deg, #fd7e14, #f39c12); }
+    .no-role { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+
+    /* Connector lines */
+    .connector {
+      position: absolute;
+      background: #3498db;
+      opacity: 0.6;
+    }
+
+    /* Vertical connectors */
+    .vertical-connector {
+      width: 2px;
+      height: 60px;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Horizontal connectors */
+    .horizontal-connector {
+      height: 2px;
+      width: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Left horizontal connector */
+    .connector-left {
+      right: 100%;
+    }
+
+    /* Right horizontal connector */
+    .connector-right {
+      left: 100%;
+    }
+
+    /* Center connector for multiple children */
+    .parent-connector {
+      position: absolute;
+      width: 80%;
+      height: 2px;
+      background: #3498db;
+      top: 50%;
+      left: 10%;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    /* Children container */
+    .children-container {
+      position: relative;
+      margin-top: 60px;
+    }
+
+    /* For single root */
+    .root-container {
+      position: relative;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1200px) {
+      .tree-level {
+        gap: 40px;
+      }
+      .node-card {
+        min-width: 220px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .tree-level {
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+      }
+      .node {
+        width: 100%;
+        max-width: 300px;
+      }
+      .horizontal-connector {
+        display: none;
+      }
+    }
+
+    /* Animation for nodes */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .node-card {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    /* Stagger animation for children */
+    .tree-level .node:nth-child(1) .node-card { animation-delay: 0.1s; }
+    .tree-level .node:nth-child(2) .node-card { animation-delay: 0.2s; }
+    .tree-level .node:nth-child(3) .node-card { animation-delay: 0.3s; }
+    .tree-level .node:nth-child(4) .node-card { animation-delay: 0.4s; }
+    .tree-level .node:nth-child(5) .node-card { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+<h1>Organizational Hierarchy Tree</h1>
+
+<div class="tree-container" id="treeContainer"></div>
+
+<script>
+const data = [
+  {
+    "id": "69341c2cba6f22bf13750119",
+    "fullName": "System Owner",
+    "email": "owner@crm.com",
+    "role": {
+      "name": "Super Admin",
+      "roleLevel": 1
+    },
+    "children": [
+      {
+        "id": "6937e9793d8b7617a9c52285",
+        "fullName": "Mr. Yunush",
+        "email": "teamleader1@crm.com",
+        "role": {
+          "name": null,
+          "roleLevel": null
+        },
+        "children": []
+      },
+      {
+        "id": "6938060ecd9c99dbbe71c086",
+        "fullName": "Admin",
+        "email": "admin@crm.com",
+        "role": {
+          "name": "Admin",
+          "roleLevel": 2
+        },
+        "children": [
+          {
+            "id": "6939117ccd9c99dbbe71c899",
+            "fullName": "Manager B",
+            "email": "manager@crm.com",
+            "role": {
+              "name": "Manager",
+              "roleLevel": 3
+            },
+            "children": [
+              {
+                "id": "693911accd9c99dbbe71c8bb",
+                "fullName": "Sales D Manager B",
+                "email": "sales@crm.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "69394fece122ea80da1c701f",
+                "fullName": "Sales C Manager B",
+                "email": "sales2@crm.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "693a9d0ae122ea80da1c8713",
+            "fullName": "Manager A",
+            "email": "manager2@crm.com",
+            "role": {
+              "name": "Manager",
+              "roleLevel": 3
+            },
+            "children": [
+              {
+                "id": "693a9f35e122ea80da1c87a5",
+                "fullName": "SalesB Manager A",
+                "email": "sales1m2@crm.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "693a9f56e122ea80da1c87be",
+                "fullName": "SalesA Manger A",
+                "email": "sales2m2@crm.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "693808accd9c99dbbe71c124",
+        "fullName": "mayank Admin",
+        "email": "mayankadmin@crm.com",
+        "role": {
+          "name": "Admin",
+          "roleLevel": 2
+        },
+        "children": [
+          {
+            "id": "69414141e513ce79f92a7087",
+            "fullName": "Mayank Manager",
+            "email": "mm@crm.com",
+            "role": {
+              "name": "Manager",
+              "roleLevel": 3
+            },
+            "children": [
+              {
+                "id": "6941419fe513ce79f92a7151",
+                "fullName": "Mayank Sales",
+                "email": "ms1@crm.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "6941416ee513ce79f92a70e8",
+            "fullName": "Mayank Manager 2",
+            "email": "mm1@crm.com",
+            "role": {
+              "name": "Manager",
+              "roleLevel": 3
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "69425133e513ce79f92a8870",
+        "fullName": "Yash Jha",
+        "email": "yash@gmail.com",
+        "role": {
+          "name": "Admin",
+          "roleLevel": 2
+        },
+        "children": [
+          {
+            "id": "6942b9249cab16656fdb7dc2",
+            "fullName": "Yash TL",
+            "email": "Yashtl@nexthikes.com",
+            "role": {
+              "name": "Manager",
+              "roleLevel": 3
+            },
+            "children": [
+              {
+                "id": "6942b9759cab16656fdb7dea",
+                "fullName": "Ruchi",
+                "email": "Ruchi@nexthikes.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "6942b9ad9cab16656fdb7e03",
+                "fullName": "Suleman",
+                "email": "Suleman@nexthikes.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "6942b9e39cab16656fdb7e1d",
+                "fullName": "Arya",
+                "email": "Arya@nexthikes.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "6942ba1b9cab16656fdb7e36",
+                "fullName": "Prashant",
+                "email": "Prashant@nexthikes.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              },
+              {
+                "id": "6942ba4b9cab16656fdb7e4f",
+                "fullName": "Akansha",
+                "email": "akansha@nexthikes.com",
+                "role": {
+                  "name": "Sales Executive",
+                  "roleLevel": 4
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+/**
+ * Create a single node element
+ */
+function createNodeElement(user, level = 0) {
+  const node = document.createElement('div');
+  node.className = 'node';
+  
+  const roleLevel = user.role?.roleLevel || 'no-role';
+  const roleName = user.role?.name || 'No Role';
+  
+  node.innerHTML = `
+    <div class="node-card level-${roleLevel}">
+      <div class="node-name">${user.fullName}</div>
+      <div class="node-email">${user.email}</div>
+      <div class="node-role ${roleLevel === 'no-role' ? 'no-role' : `level-${roleLevel}`}">
+        ${roleName}
+      </div>
+    </div>
+  `;
+  
+  return node;
+}
+
+/**
+ * Render a level of the tree
+ */
+function renderTreeLevel(users, level = 0, parentNode = null) {
+  const levelDiv = document.createElement('div');
+  levelDiv.className = `tree-level level-${level}`;
+  
+  users.forEach((user, index) => {
+    const nodeElement = createNodeElement(user, level);
+    levelDiv.appendChild(nodeElement);
+    
+    // Add vertical connector from parent
+    if (parentNode && level > 0) {
+      const verticalConnector = document.createElement('div');
+      verticalConnector.className = 'connector vertical-connector';
+      levelDiv.appendChild(verticalConnector);
+    }
+    
+    // Add horizontal connectors between siblings if there are multiple
+    if (users.length > 1 && index < users.length - 1) {
+      const horizontalConnector = document.createElement('div');
+      horizontalConnector.className = 'connector horizontal-connector connector-right';
+      levelDiv.appendChild(horizontalConnector);
+    }
+    
+    // Recursively render children
+    if (user.children && user.children.length > 0) {
+      const childrenContainer = document.createElement('div');
+      childrenContainer.className = 'children-container';
+      
+      // Add vertical connector to children
+      const childConnector = document.createElement('div');
+      childConnector.className = 'connector vertical-connector';
+      childrenContainer.appendChild(childConnector);
+      
+      // Render child level
+      const childLevel = renderTreeLevel(user.children, level + 1, nodeElement);
+      childrenContainer.appendChild(childLevel);
+      
+      // Add connector between multiple children
+      if (user.children.length > 1) {
+        const parentConnector = document.createElement('div');
+        parentConnector.className = 'parent-connector';
+        childrenContainer.insertBefore(parentConnector, childLevel);
+      }
+      
+      levelDiv.appendChild(childrenContainer);
+    }
+  });
+  
+  return levelDiv;
+}
+
+/**
+ * Main render function
+ */
+function renderTree(data) {
+  const container = document.getElementById('treeContainer');
+  const tree = document.createElement('div');
+  tree.className = 'tree';
+  
+  // Assuming single root for org chart
+  if (data.length > 0) {
+    const rootContainer = document.createElement('div');
+    rootContainer.className = 'root-container';
+    
+    // Render root
+    const rootElement = createNodeElement(data[0], 0);
+    rootContainer.appendChild(rootElement);
+    
+    // Render children if root has them
+    if (data[0].children && data[0].children.length > 0) {
+      // Add vertical connector
+      const verticalConnector = document.createElement('div');
+      verticalConnector.className = 'connector vertical-connector';
+      rootContainer.appendChild(verticalConnector);
+      
+      // Add horizontal connector for multiple children
+      if (data[0].children.length > 1) {
+        const parentConnector = document.createElement('div');
+        parentConnector.className = 'parent-connector';
+        rootContainer.appendChild(parentConnector);
+      }
+      
+      // Render children levels
+      const childrenLevel = renderTreeLevel(data[0].children, 1, rootElement);
+      rootContainer.appendChild(childrenLevel);
+    }
+    
+    tree.appendChild(rootContainer);
+  }
+  
+  container.appendChild(tree);
+}
+
+// Initialize the tree
+renderTree(data);
+
+// Adjust connectors after rendering
+setTimeout(() => {
+  adjustConnectors();
+}, 100);
+
+function adjustConnectors() {
+  // Additional logic to adjust connector positions if needed
+  // This can be expanded based on specific layout requirements
+}
+</script>
+
+</body>
+</html>

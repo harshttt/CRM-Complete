@@ -1,0 +1,9 @@
+fullName,phone,email,source,branch,region,budgetMin,budgetMax,projectName,category,address
+Rahul Sharma,5876543211,rahul4@example.com,website,Mumbai,West,2000000,4000000,Sunshine Tower,Residential,Bandra East
+Anita Verma,5123456781,anita4@demo.com,referral,Pune,North,2500000,3500000,Blue Heights,Commercial,Hadapsar
+Vikram Singh,5988776651,vikram4@test.com,campaign,Delhi,South,3000000,4500000,Green Park,Residential,Hauz Khas
+Rohit Mehra,5090909091,rohit4@test.com,walk-in,Bangalore,East,1500000,2500000,Orion Plaza,Residential,Whitefield
+Pooja Shah,5191919192,pooja2@example.com,ads,Ahmedabad,Central,1800000,2200000,City Square,Commercial,Navrangpura
+Karan Patel,5888888882,karan2@example.com,website,Mumbai,Central,1200000,1600000,Emerald Residency,Residential,Dadar
+Priya Nair,5777777771,priya2@test.com,broker,Hyderabad,North,2100000,3300000,Lake View,Residential,Kukatpally
+Arjun Reddy,5666666661,arjun2@test.com,social,Chennai,South,1000000,1400000,Beach Homes,Residential,Thiruvanmiyur

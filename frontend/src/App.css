@@ -1,0 +1,131 @@
+#root {
+  /* max-width: 1280px; */
+  /* margin: 0 auto; */
+  /* padding: 2rem; */
+  /* text-align: center; */
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.ant-modal-body{
+  border-radius:20px;
+}
+
+.ant-modal-container{
+  border-radius: 20px !important;
+  background:radial-gradient(circle at 50% 20%, #e1f3ff, #f2f6ff) !important;
+}
+
+  .ant-modal-content{
+    /* padding: 15px !important; */
+    background:radial-gradient(circle at 30% 20%, #e6f4ff, #d6e4ff) !important;
+  }
+
+  /* Only WhatsApp Modal */
+.whatsapp-modal .ant-modal-content {
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at 30% 20%,
+    #e1fff4,
+    #f2f6ff
+  );
+}
+
+/* Optional: header styling */
+.whatsapp-modal .ant-modal-header {
+  background: transparent;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+}
+
+/* Optional: footer styling */
+.whatsapp-modal .ant-modal-footer {
+  border-top: none;
+}
+
+.meet-modal .ant-modal-content {
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.meet-modal .ant-modal-header {
+  border-bottom: none;
+}
+
+.meet-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.meet-section-title {
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #202124;
+  
+}
+
+.meet-primary {
+  background: #1a73e8;
+  border-color: #1a73e8;
+  border-radius: 999px;
+  padding-inline: 20px;
+}
+
+.meet-primary:hover {
+  background: #1558b0;
+  border-color: #1558b0;
+}
+
+.meet-info {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f1f3f4;
+  margin-bottom: 16px;
+}
+
+.no-copy {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  cursor: not-allowed;
+} 

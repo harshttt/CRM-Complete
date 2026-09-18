@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Socket Notification Test</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    pre {
+      background: #020617;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔌 Socket.IO Notification Test</h2>
+
+  <p>Status: <strong id="status">DISCONNECTED</strong></p>
+
+  <button onclick="connectSocket()">Connect</button>
+  <button onclick="disconnectSocket()">Disconnect</button>
+
+  <pre id="log"></pre>
+
+  <script>
+    // 🔑 HARD-CODE ACCESS TOKEN HERE
+    const ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NGU3MmNiZjA5YTI2ZDQyYzBkOGMzMyIsImlhdCI6MTc2NzA4NzkyMCwiZXhwIjoxNzk4NjIzOTIwfQ.4K-nqyUg3S-2U9AGPaLa7bdY9h8OGeITK_Fm9og2fIM";
+
+    let socket;
+
+    function log(msg) {
+      const el = document.getElementById("log");
+      el.textContent += msg + "\n";
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function connectSocket() {
+      if (socket && socket.connected) {
+        log("Already connected");
+        return;
+      }
+
+      socket = io("http://localhost:7500/notifications", {
+        auth: {
+          token: ACCESS_TOKEN
+        }
+      });
+
+      socket.on("connect", () => {
+        document.getElementById("status").innerText = "CONNECTED";
+        log("✅ Connected: " + socket.id);
+      });
+
+      socket.on("connect_error", (err) => {
+        document.getElementById("status").innerText = "ERROR";
+        log("❌ Connect error: " + err.message);
+      });
+
+      socket.on("disconnect", (reason) => {
+        document.getElementById("status").innerText = "DISCONNECTED";
+        log("🔌 Disconnected: " + reason);
+      });
+
+      socket.on("notification:new", (data) => {
+        log("📩 Notification received:");
+        log(JSON.stringify(data, null, 2));
+      });
+    }
+
+    function disconnectSocket() {
+      if (socket) {
+        socket.disconnect();
+        log("Manual disconnect");
+      }
+    }
+  </script>
+
+</body>
+</html>
