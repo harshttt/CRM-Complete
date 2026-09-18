@@ -1,5 +1,5 @@
 import { parseAsString, useQueryStates } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Divider, Form, Input, Row, Space, Table, Tag, Tooltip, Typography, Select, message } from "antd";
 import { CalendarOutlined, PlusOutlined, SearchOutlined, CheckCircleOutlined, CloseCircleOutlined, FieldTimeOutlined, UserOutlined, ReloadOutlined, LoginOutlined, PlayCircleOutlined, StopOutlined, ExclamationCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import util from "../../../utils/util";
@@ -8,6 +8,7 @@ import { useSalesMeetingList, useSalesMeetingStats } from "../../../api-hooks/sa
 import SalesMeetingModal from "./SalesMeetingModal";
 import MeetingDetailDrawer from "./MeetingDetailDrawer";
 import dayjs from "dayjs";
+import { useSearchParams } from "react-router-dom";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -32,6 +33,7 @@ const OUTCOME_COLORS = {
 
 const Meeting = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const [searchParams] = useSearchParams();
 
   // ---------- Search ----------
   const [search, setSearch] = useQueryStates(
@@ -45,6 +47,14 @@ const Meeting = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedMeetingId, setSelectedMeetingId] = useState(null);
   const [statusFilter, setStatusFilter] = useState(undefined);
+
+  useEffect(() => {
+    const meetingId = searchParams.get("meetingId");
+    if (meetingId) {
+      setSelectedMeetingId(meetingId);
+      setDrawerOpen(true);
+    }
+  }, [searchParams]);
 
   // ---------- Data Fetching ----------
   const { data: meetingRes, isFetching, isError, error, refetch, refetchWithQuery } = useSalesMeetingList({ qData: { page: 1, limit: 20 } });

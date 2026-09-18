@@ -18,7 +18,7 @@ import Leads from "../pages/leads";
 import Meeting from "../pages/meeting";
 import Customers from "../pages/customers";
 
-import CRMDashboard from "../pages/dashboard";
+import CRMDashboard from "../pages/salesDashboard";
 
 import util from "../../utils/util";
 

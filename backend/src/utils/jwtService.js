@@ -3,32 +3,32 @@ import crypto from "crypto";
 
 export class JwtService {
 
-  static async generateAccessAndRefreshTokens(userId) {
-    const accessToken = await this.generateAccessToken(userId);
-    const refreshToken = await this.generateRefreshToken(userId);
+  static async generateAccessAndRefreshTokens(userId, sessionId) {
+    const accessToken = await this.generateAccessToken(userId, sessionId);
+    const refreshToken = await this.generateRefreshToken(userId, sessionId);
     return { accessToken, refreshToken };
   }
 
-  static async generateAccessToken(userId) {
+  static async generateAccessToken(userId, sessionId = null) {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
       throw new Error("JWT_SECRET is not defined in environment variables.");
     }
     const token = await jwt.sign(
-      { id: userId, type: "access" },
+      { id: userId, sid: sessionId, type: "access" },
       secret,
       { expiresIn: process.env.JWT_ACCESS_EXP || "15m" }
     );
     return token;
   }
 
-  static async generateRefreshToken(userId) {
+  static async generateRefreshToken(userId, sessionId) {
     const secret = process.env.REFRESH_SECRET;
     if (!secret) {
       throw new Error("REFRESH_SECRET is not defined in environment variables.");
     }
     const token = await jwt.sign(
-      { id: userId, type: "refresh" },
+      { id: userId, sid: sessionId, type: "refresh" },
       secret,
       { expiresIn: process.env.JWT_REFRESH_EXP || "7d" }
     );

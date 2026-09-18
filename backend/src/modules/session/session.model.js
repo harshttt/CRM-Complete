@@ -22,6 +22,8 @@ const sessionSchema = BaseModel({
   fcmToken: String,
   isActive: { type: Boolean, default: true },
   lastUsedAt: { type: Date, default: Date.now },
+  refreshTokenHash: { type: String, select: false },
+  refreshTokenExpiresAt: Date,
   expiresAt: Date,
   isLoggedOutByAdmin: { type: Boolean, default: false },
   suspicious: { type: Boolean, default: false },

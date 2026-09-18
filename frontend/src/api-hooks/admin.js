@@ -38,7 +38,7 @@ export const useLogin = ({onSuccess, onError}, others = {} ) => {
     });
 };
 
-export const useLogOut = (options={}) => {
+export const useLogOut = ({ onSuccess, onError, ...options } = {}) => {
     const mutationResult = useMutation({
         mutationFn: async (data)=>{
             const res = await axiosInstance.post(API_ENDPOINTS.USER_LOGOUT, data);

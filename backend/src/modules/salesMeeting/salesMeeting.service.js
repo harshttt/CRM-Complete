@@ -716,10 +716,15 @@ export class SalesMeetingService {
     const startOfWeek = new Date(startOfDay);
     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 
+    const activeMeetingFilter = {
+      ...matchFilter,
+      status: { $ne: "CANCELLED" },
+    };
+
     const [todayMeetings, completedThisWeek, totalMeetings] =
       await Promise.all([
         SalesMeeting.countDocuments({
-          ...matchFilter,
+          ...activeMeetingFilter,
           scheduledStart: { $gte: startOfDay, $lt: endOfDay },
         }),
         SalesMeeting.countDocuments({
@@ -727,7 +732,7 @@ export class SalesMeetingService {
           status: "COMPLETED",
           updatedAt: { $gte: startOfWeek },
         }),
-        SalesMeeting.countDocuments(matchFilter),
+        SalesMeeting.countDocuments(activeMeetingFilter),
       ]);
 
     // Follow-up stats

@@ -7,6 +7,7 @@ import { auth } from "../../middlewares/auth.middleware.js";
 const router = Router();
 
 router.post("/login", validate(loginSchema), AuthController.login);
+router.post("/refresh", AuthController.refresh);
 router.post("/logout", AuthController.logout);
 router.post("/validate",auth, AuthController.validateToken);
 

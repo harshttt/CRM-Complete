@@ -3,6 +3,7 @@ const API_ENDPOINTS = {
     USER_VALIDATE_TOKEN : 'auth/validate',
     USER_LOGIN:'auth/login',
     USER_LOGOUT:'auth/logout',
+    USER_REFRESH_TOKEN:'auth/refresh',
     USER_UPDATE_PASSWORD:'user/',
 
     CONSTANTS:'/constants/all',

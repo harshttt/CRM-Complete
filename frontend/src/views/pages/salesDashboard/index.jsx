@@ -76,7 +76,7 @@ const SalesDashboard = () => {
       render: (_, row) => (
         <RightOutlined
           style={{ cursor: "pointer", color: "#1890ff" }}
-          onClick={() => navigate(`/sales-meetings/${row.id}`)}
+          onClick={() => navigate(`/leads-management/meeting?meetingId=${row.id}`)}
         />
       ),
     },
@@ -189,7 +189,7 @@ const SalesDashboard = () => {
         title="Recent Meetings"
         style={{ marginBottom: 24 }}
         extra={
-          <a onClick={() => navigate("/sales-meetings")}>View All</a>
+          <a onClick={() => navigate("/leads-management/meeting")}>View All</a>
         }
       >
         <Table
@@ -206,7 +206,7 @@ const SalesDashboard = () => {
       <Card
         title="Pending & Overdue Follow-Ups"
         extra={
-          <a onClick={() => navigate("/sales-follow-ups")}>View All</a>
+          <a onClick={() => navigate("/leads-management/meeting")}>View All</a>
         }
       >
         <Table

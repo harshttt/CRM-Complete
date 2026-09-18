@@ -5,6 +5,9 @@ import commonObj from "../../commonObj";
 import { Link, useNavigate } from "react-router-dom";
 import useNotificationStore from "../../store/notificationStore";
 import NotificationList from "../components/NotificationList";
+import axiosInstance from "../../utils/axios";
+import API_ENDPOINTS from "../../constants/api-endpoints";
+import util from "../../utils/util";
 
 export default function Top() {
   const unreadCount = useNotificationStore((state) => state.unreadCount);
@@ -150,10 +153,17 @@ export default function Top() {
             background: "#fef2f2",
             border: "1px solid #fecaca",
           }}
-          onClick={() => {
-            localStorage.clear();
-            navigate("/");
-            window.location.reload();
+          onClick={async () => {
+            try {
+              await axiosInstance.post(API_ENDPOINTS.USER_LOGOUT, {
+                sessionId: localStorage.getItem("sessionId"),
+                userId: commonObj?.id,
+              });
+            } finally {
+              util.clearAuth();
+              navigate("/login", { replace: true });
+              window.location.reload();
+            }
           }}
         >
           Logout

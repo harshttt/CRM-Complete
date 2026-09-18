@@ -86,6 +86,17 @@ formatPermissions(text) {
   getToken = () => {
     return window.localStorage["authorization"] || "";
   };
+  getRefreshToken = () => {
+    return "cookie-managed";
+  };
+  setTokens = ({ accessToken, refreshToken, sessionId }) => {
+    if (accessToken) window.localStorage.setItem("authorization", accessToken);
+    if (sessionId) window.localStorage.setItem("sessionId", sessionId);
+  };
+  clearAuth = () => {
+    window.localStorage.removeItem("authorization");
+    window.localStorage.removeItem("sessionId");
+  };
   isLogged = () => {
     if (
       typeof window.localStorage["authorization"] !== "undefined" &&
