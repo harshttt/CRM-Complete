@@ -1,6 +1,5 @@
 // meta.facebook.cron.js
 import cron from "node-cron";
-import Redis from "ioredis";
 import logger from "../../utils/logger.js";
 import FacebookWebhookEvent from "../facebook/facebookWebhookEvent.model.js";
 import { fetchFacebookLead } from "../facebook/facebook.service.js";

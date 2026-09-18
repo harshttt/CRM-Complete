@@ -1,13 +1,9 @@
 import { RateLimiterRedis } from 'rate-limiter-flexible';
-import Redis from 'ioredis';
+import { redisClient } from '../config/redis.js';
 
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: Number(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD || undefined,
-});
 const points = Number(process.env.RATE_LIMIT_POINTS || 100);
 const duration = Number(process.env.RATE_LIMIT_DURATION || 60);
+
 const limiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: 'rlflx',
@@ -19,10 +15,26 @@ const limiter = new RateLimiterRedis({
 
 export function rateLimiterMiddleware(req, res, next) {
   const key = (req.user && req.user.id) || req.ip;
-  limiter.consume(key)
+
+  limiter
+    .consume(key)
     .then(() => next())
     .catch((rej) => {
-      res.set('Retry-After', String(Math.ceil(rej.msBeforeNext / 1000)));
-      return res.status(429).json({ error: 'Too many requests' });
+      // Redis/network error ko 429 treat na karo
+      if (!rej || typeof rej.msBeforeNext !== 'number') {
+        console.error('Rate limiter Redis error:', rej);
+        return next();
+      }
+
+      const retryAfter = Math.max(
+        1,
+        Math.ceil(rej.msBeforeNext / 1000)
+      );
+
+      res.set('Retry-After', String(retryAfter));
+
+      return res.status(429).json({
+        error: 'Too many requests',
+      });
     });
 }
