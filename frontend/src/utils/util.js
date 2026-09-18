@@ -70,7 +70,6 @@ formatPermissions(text) {
     window.localStorage.setItem("sessionId", data.data.sessionId);
     // window.localStorage.setItem("refreshToken", data.data.refreshToken);
     // window.localStorage.setItem("user_info", JSON.stringify(data.data.user));
-    window.location.reload();
     // window.localStorage.setItem('type', data.type);
   };
   getUserData = ($key) => {

@@ -217,20 +217,18 @@ import {
 import { useLogin } from "../../api-hooks/admin";
 import util from "../../utils/util";
 import { requestNotificationPermission } from "../../utils/notification";
-import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
 const Login = () => {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
 
   const { mutate: login, isPending: loading } = useLogin({
     onSuccess: (data) => {
       util.setUserData(data);
       messageApi.success(data.message);
-      navigate("/", { replace: true });
+      window.location.replace("/");
     },
 
     onError: (data) => {
